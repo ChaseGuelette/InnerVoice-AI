@@ -1,6 +1,8 @@
 import openai
 import requests
 
+generateAudio = True
+
 #Global Parameters
 OPENAI_API_KEY = open("openaikey.txt", "r").read()
 openai.api_key = OPENAI_API_KEY
@@ -59,12 +61,13 @@ def generateMP3ForInput(inputText: str, inputEmotions: str):
                 "similarity_boost": 0.5
             }
         }
-        response = requests.post(url, json=data, headers=headers)
+        if generateAudio:
+            response = requests.post(url, json=data, headers=headers)
 
-        with open('static/output.mp3', 'wb') as f:
-            for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
-                if chunk:
-                    f.write(chunk)
+            with open('static/output.mp3', 'wb') as f:
+                for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+                    if chunk:
+                        f.write(chunk)
 
 if __name__ == '__main__':
     # Temp loop for testing purposes
