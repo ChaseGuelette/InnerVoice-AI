@@ -1,8 +1,6 @@
 import openai
 import requests
 
-useVoiceOutput = False
-
 #Global Parameters
 API_KEY = open("openaikey.txt", "r").read()
 openai.api_key = API_KEY
@@ -51,27 +49,26 @@ def generateMP3ForInput(inputText: str, inputEmotions: str):
         content = "Emotions : " + inputEmotions + "\nUser Speach: " + inputText
         text = getGPTResponseForInput(content)
         print(text)
-        if useVoiceOutput:
-            data = {
-                "text": text,
-                "model_id": "eleven_turbo_v2",
-                "voice_settings": {
-                    "stability": 0.5,
-                    "similarity_boost": 0.5
-                }
+        data = {
+            "text": text,
+            "model_id": "eleven_turbo_v2",
+            "voice_settings": {
+                "stability": 0.5,
+                "similarity_boost": 0.5
             }
-            response = requests.post(url, json=data, headers=headers)
+        }
+        response = requests.post(url, json=data, headers=headers)
 
-            with open('output.mp3', 'wb') as f:
-                for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
-                    if chunk:
-                        f.write(chunk)
+        with open('static/output.mp3', 'wb') as f:
+            for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+                if chunk:
+                    f.write(chunk)
 
-# Temp code  for testing purposes
-initOpenAITextGeneration()
-while True:
-    inputText = input("User Text: ")
-    if inputText == "exit":
-            break
-    inputEmotions = input("Emotions: ")
-    generateMP3ForInput(inputText,  inputEmotions)
+if __name__ == '__main__':
+    # Temp loop for testing purposes
+    while True:
+        inputText = input("User Text: ")
+        if inputText == "exit":
+                break
+        inputEmotions = input("Emotions: ")
+        generateMP3ForInput(inputText,  inputEmotions)

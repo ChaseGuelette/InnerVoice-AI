@@ -1,1 +1,28 @@
-<p>test</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Text to Speech Generator</h1>
+    <form id="textForm">
+        <label for="inputText">Input Text:</label><br>
+        <textarea id="inputText" name="inputText" rows="4" cols="50"></textarea><br><br>
+        
+        <label for="inputEmotions">Input Emotions:</label><br>
+        <textarea id="inputEmotions" name="inputEmotions" rows="2" cols="50"></textarea><br><br>
+        
+        <button type="button" onclick="submitForm()">Generate</button>
+    </form>
+
+    <p id="responseText"></p>
+    <audio id="audio" controls hidden>
+        <source id="audioSource" src="{{ url_for('static', filename='output.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
