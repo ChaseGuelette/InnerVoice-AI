@@ -26,6 +26,9 @@ async function submitForm() {
     audioElement.oncanplaythrough = () => {
         audioElement.play();
     };
+
+    // Refresh the chat history
+    fetchChatHistory();
 }
 
 function showToast(message) {
@@ -138,4 +141,28 @@ async function signOut() {
         document.getElementById('preferredName').value = '';
         document.getElementById('password').value = '';
     }
+}
+
+async function fetchChatHistory() {
+    const response = await fetch('/chat-history', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    const data = await response.json();
+    displayChatHistory(data.conversation);
+}
+
+function displayChatHistory(conversation) {
+    const chatHistoryDiv = document.getElementById('chatHistory');
+    chatHistoryDiv.innerHTML = '';
+
+    conversation.forEach(chat => {
+        const chatMessage = document.createElement('div');
+        chatMessage.className = 'chat-message';
+        chatMessage.innerText = `${chat.role === 'user' ? 'User' : 'System'}: ${chat.content}`;
+        chatHistoryDiv.appendChild(chatMessage);
+    });
 }

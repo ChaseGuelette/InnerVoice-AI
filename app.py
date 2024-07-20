@@ -49,5 +49,10 @@ def handle_logout() -> str:
     session.clear()
     return jsonify({"success": True, "message": "Logout successful!"})
 
+@app.route('/chat-history', methods=['GET'])
+def get_chat_history() -> str:
+    # Return the current conversation history
+    return jsonify({"conversation": responseGenerator.conversation})
+
 if __name__ == '__main__':
     app.run(debug=True)  # Use debug=True for development purposes
