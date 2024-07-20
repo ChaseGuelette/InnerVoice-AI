@@ -36,9 +36,18 @@ def handle_login() -> str:
 
     # Store preferred_name in session
     session['preferred_name'] = preferred_name
+    session['username'] = username  # Store username in session for completeness
+    session['password'] = password  # Store password in session for completeness
+    session['past_context'] = ''  # Initialize past context as empty
 
     # Simulate a successful login for this example
     return jsonify({"success": True, "message": "Login successful!", "username": username, "preferredName": preferred_name})
+
+@app.route('/logout', methods=['POST'])
+def handle_logout() -> str:
+    # Clear session data
+    session.clear()
+    return jsonify({"success": True, "message": "Logout successful!"})
 
 if __name__ == '__main__':
     app.run(debug=True)  # Use debug=True for development purposes

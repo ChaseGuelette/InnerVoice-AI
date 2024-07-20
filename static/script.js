@@ -111,16 +111,31 @@ function signUp(username, preferredName) {
     greetingMsg.hidden = false;
 }
 
-function signOut() {
-    showToast('Sign Out button clicked');
-    
-    // Simulate user sign-out
-    const signInBtn = document.getElementById('signInBtn');
-    const signUpBtn = document.getElementById('signUpBtn');
-    const greetingMsg = document.getElementById('greetingMsg');
-    
-    signInBtn.hidden = false;
-    signUpBtn.hidden = false;
-    greetingMsg.hidden = true;
-    document.getElementById('preferredNameDisplay').innerText = ''; // Clear preferred name text
+async function signOut() {
+    const response = await fetch('/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    const data = await response.json();
+    showToast(data.message);
+
+    if (data.success) {
+        const signInBtn = document.getElementById('signInBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const greetingMsg = document.getElementById('greetingMsg');
+        
+        signInBtn.hidden = false;
+        signUpBtn.hidden = false;
+        greetingMsg.hidden = true;
+        document.getElementById('preferredNameDisplay').innerText = ''; // Clear preferred name text
+
+        // Clear past context, username and password
+        document.getElementById('inputPastContext').value = '';
+        document.getElementById('username').value = '';
+        document.getElementById('preferredName').value = '';
+        document.getElementById('password').value = '';
+    }
 }
