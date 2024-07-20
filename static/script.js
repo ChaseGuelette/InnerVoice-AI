@@ -1,4 +1,5 @@
 async function submitForm() {
+    const inputPastContext = document.getElementById('inputPastContext').value;
     const inputText = document.getElementById('inputText').value;
     const inputEmotions = document.getElementById('inputEmotions').value;
 
@@ -7,7 +8,7 @@ async function submitForm() {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `inputText=${encodeURIComponent(inputText)}&inputEmotions=${encodeURIComponent(inputEmotions)}`
+        body: `inputPastContext=${encodeURIComponent(inputPastContext)}&inputText=${encodeURIComponent(inputText)}&inputEmotions=${encodeURIComponent(inputEmotions)}`
     });
 
     const data = await response.json();
@@ -16,6 +17,8 @@ async function submitForm() {
     const audioElement = document.getElementById('audio');
     const audioSource = document.getElementById('audioSource');
     audioSource.src = 'static/output.mp3' + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
+
+    audioElement.hidden = false;
     
     audioElement.load(); // Reload the audio element to ensure it's ready to play
 
@@ -46,7 +49,7 @@ function showAuthForm(type) {
 
 function cancelAuthForm() {
     const authForm = document.getElementById('authForm');
-    authForm.style.display= 'none'; // Hide the auth form
+    authForm.style.display = 'none'; // Hide the auth form
 }
 
 async function submitAuthForm(event) {

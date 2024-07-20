@@ -20,7 +20,7 @@ headers = {
 
 conversation = []
 
-def initOpenAITextGeneration():
+def initOpenAITextGeneration(name:str = '', pastConversationContext: str = ''):
     systemMessage= '''
         You are the person people reach out to for help. People will talk to you with a casual converstaional tone, and you must respond with a casual converstaional tone.
         You are an expert in all things mental health and therapy. 
@@ -35,6 +35,17 @@ def initOpenAITextGeneration():
     message = {"role":"system", "content": systemMessage}
     conversation.append(message)
 
+    print("Name: " + name)
+    print("\nPast Context: " + pastConversationContext)
+    print('\n')
+
+    if name != '':
+        message = {"role":"system", "content": "The users name is: " + name + ". You should use this name when talking to the user"}
+        conversation.append(message)
+
+    if pastConversationContext != '':
+        message = {"role":"system", "content": "This is summary of the past three conversations you have had with this user. You should use this information when talking to the user:\n" + pastConversationContext}
+        conversation.append(message)
 
 def getGPTResponseForInput(input: str):
     message = {"role":"user", "content": input}
@@ -70,7 +81,10 @@ def generateMP3ForInput(inputText: str, inputEmotions: str):
                         f.write(chunk)
 
 if __name__ == '__main__':
-    # Temp loop for testing purposes
+    name = input('Name: ')
+    pastConvos = input('Past Context: ')
+
+    initOpenAITextGeneration(name=name, pastConversationContext=pastConvos)
     while True:
         inputText = input("User Text: ")
         if inputText == "exit":
