@@ -15,7 +15,7 @@
             <button id="signOutBtn" onclick="signOut()">Sign Out</button>
         </span>
     </div>
-    
+
     <!-- Sign In / Sign Up Form -->
     <div id="authForm" class="auth-form" hidden>
         <form id="authFormContent" onsubmit="submitAuthForm(event)">
@@ -27,27 +27,12 @@
             <button type="button" onclick="cancelAuthForm()">Cancel</button>
         </form>
     </div>
-    
+
     <div class="main-content">
         <div class="left-content">
-            <h1>Text to Speech Generator</h1>
-            
-            <!-- Add new past context field -->
-            <form id="textForm">
-                <label for="inputPastContext">Past Context:</label><br>
-                <textarea id="inputPastContext" name="inputPastContext" rows="4" cols="50" placeholder="Enter all past context here"></textarea><br><br>
+            <h1>Inner Voice AI</h1>
 
-                <label for="inputText">Input Text:</label><br>
-                <textarea id="inputText" name="inputText" rows="4" cols="50"></textarea><br><br>
-                
-                <label for="inputEmotions">Input Emotions:</label><br>
-                <textarea id="inputEmotions" name="inputEmotions" rows="2" cols="50"></textarea><br><br>
-                
-                <!-- New Button for Server-side Recording -->
-                <button type="button" onclick="startServerSideRecording()">Start Server-side Recording</button>
-
-                <button type="button" onclick="submitForm()">Generate</button>
-            </form>
+            <button type="button" onclick="submitForm()">Start Recording</button>
 
             <p id="responseText"></p>
             <audio id="audio" controls hidden preload="auto">
@@ -56,41 +41,19 @@
         </div>
 
         <div class="right-content">
-            <h2>Chat History</h2>
-            <div id="chatHistory"></div>
+            <div id="chatHistory" class="chat-history">
+              <div class="chat-history-header">
+                <h2>Chat History</h2>
+              </div>
+              <div class="chat-history-messages">
+                <!-- Chat messages will be inserted here -->
+              </div>
+            </div>
         </div>
     </div>
 
     <div id="toast" class="toast"></div> <!-- Toast container -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script>
-        function startServerSideRecording() {
-            fetch('/start-recording')
-                .then(response => response.json())
-                .then(data => {
-                    showToast(data.message);
-                    const audioElement = document.getElementById('audio');
-                    const audioSource = document.getElementById('audioSource');
-                    audioSource.src = data.audioFile + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
-    
-                    audioElement.hidden = false;
-    
-                    audioElement.load(); // Reload the audio element to ensure it's ready to play
-    
-                    // Ensure the audio file is completely loaded before playing it
-                    audioElement.oncanplaythrough = () => {
-                        audioElement.play();
-                    };
-                })
-                .catch(error => {
-                    console.error('Error starting server-side recording:', error);
-                    showToast('Failed to start server-side recording.');
-                });
 
-                window.onload = function() {
-                    fetchChatHistory();
-    };
-        }
-    </script>
 </body>
 </html>

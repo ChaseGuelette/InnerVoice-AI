@@ -1,13 +1,16 @@
 import openai
 import requests
+import os
+from dotenv import load_dotenv
 
 generateAudio = True
 
-#Global Parameters
-OPENAI_API_KEY = open("openaikey.txt", "r").read()
+load_dotenv()  # Load environment variables from .env file
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
-ELEVEN_LABS_API_KEY = open("elevenlabskey.txt", "r").read()
+ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
 
 CHUNK_SIZE = 1024
 url = "https://api.elevenlabs.io/v1/text-to-speech/iP95p4xoKVk53GoZ742B"

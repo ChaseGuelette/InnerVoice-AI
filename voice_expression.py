@@ -4,10 +4,14 @@ from utilities import print_emotions
 
 from hume import HumeBatchClient
 from hume.models.config import BurstConfig, ProsodyConfig
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def find_voice_expression():
 
-    client = HumeBatchClient(open(os.path.join(os.path.dirname(__file__), 'hume-key.txt'), 'r').read().strip())
+    client = HumeBatchClient(os.getenv("HUME_API_KEY"))
 
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,10 +47,3 @@ def find_voice_expression():
             for prosody_prediction in prosody_predictions:
                 for segment in prosody_prediction["predictions"][:1]:
                     return print_emotions(segment["emotions"])
-
-            # print()
-            # print("Vocal burst")
-            # burst_predictions = prediction["models"]["burst"]["grouped_predictions"]
-            # for burst_prediction in burst_predictions:
-            #     for segment in burst_prediction["predictions"][:1]:
-            #         print_emotions(segment["emotions"])
