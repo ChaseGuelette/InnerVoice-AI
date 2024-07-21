@@ -35,9 +35,16 @@ def find_voice_expression():
 
     full_predictions = job.get_predictions()
     print(full_predictions)
+
+    # transcription = full_predictions[0]["results"]["predictions"][0]["text"]
+    # print(transcription)
     for source in full_predictions:
         # print(str(source))
         # source_name = source["source"]["filename"]
+
+        # textTranscription =  source["results"]["predictions"]["models"]["prosody"]["grouped_predictions"]["predictions"]["text"]
+        textTranscription = source['results']['predictions'][0]["models"]["prosody"]["grouped_predictions"][0]["predictions"][0]["text"]
+        print(textTranscription)
         predictions = source["results"]["predictions"]
 
         for prediction in predictions:
@@ -46,4 +53,5 @@ def find_voice_expression():
             prosody_predictions = prediction["models"]["prosody"]["grouped_predictions"]
             for prosody_prediction in prosody_predictions:
                 for segment in prosody_prediction["predictions"][:1]:
-                    return print_emotions(segment["emotions"])
+                    # return print_emotions(segment["emotions"])
+                    return [textTranscription, print_emotions(segment["emotions"])]
