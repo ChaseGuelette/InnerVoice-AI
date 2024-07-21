@@ -13,7 +13,7 @@ def find_voice_expression():
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Construct the file path to the MP3 file
-    mp3_file_path = os.path.join(script_dir, "audio-files", "output.mp3")
+    mp3_file_path = os.path.join(script_dir, "audio-files", "speach.mp3")
 
 
     urls = ["https://storage.googleapis.com/hume-test-data/audio/ninth-century-laugh.mp3"]

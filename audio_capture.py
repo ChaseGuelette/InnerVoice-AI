@@ -121,7 +121,7 @@ def full_audio_capture():
     sound = AudioSegment.from_wav(input_path)
 
     # Include the subfolder name in the output file path
-    output_path = os.path.join(subfolder, "output.mp3")
+    output_path = os.path.join(subfolder, "speach.mp3")
     sound.export(output_path, format="mp3")
 
 # if __name__=='__main__':

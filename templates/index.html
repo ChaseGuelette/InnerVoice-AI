@@ -43,6 +43,9 @@
                 <label for="inputEmotions">Input Emotions:</label><br>
                 <textarea id="inputEmotions" name="inputEmotions" rows="2" cols="50"></textarea><br><br>
                 
+                <!-- New Button for Server-side Recording -->
+                <button type="button" onclick="startServerSideRecording()">Start Server-side Recording</button>
+
                 <button type="button" onclick="submitForm()">Generate</button>
             </form>
 
@@ -60,5 +63,18 @@
 
     <div id="toast" class="toast"></div> <!-- Toast container -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function startServerSideRecording() {
+            fetch('/start-recording')
+                .then(response => response.json())
+                .then(data => {
+                    showToast(data.message);
+                })
+                .catch(error => {
+                    console.error('Error starting server-side recording:', error);
+                    showToast('Failed to start server-side recording.');
+                });
+        }
+    </script>
 </body>
 </html>
