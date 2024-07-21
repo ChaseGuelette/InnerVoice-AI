@@ -3,7 +3,7 @@ async function submitForm() {
     const inputText = document.getElementById('inputText').value;
     const inputEmotions = document.getElementById('inputEmotions').value;
 
-    const response = await fetch('/generate', {
+    const response = await fetch('/start-recording', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

@@ -11,21 +11,7 @@ app.secret_key = 'your_secret_key'  # Replace with a secure secret key
 @app.route('/')
 def index() -> str:
     return render_template('index.html')
-
-@app.route('/generate', methods=['POST'])
-def generate() -> str:
-    input_past_context = request.form['inputPastContext']
-    input_text = request.form['inputText']
-    input_emotions = request.form['inputEmotions']
     
-    # Retrieve preferred_name from session
-    preferred_name = session.get('preferred_name', '')
-
-    # Initialize OpenAI text generation with name and past context
-    responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
-    
-    response_text = responseGenerator.generateMP3ForInput(input_text, input_emotions)
-    return jsonify({"responseText": response_text})
 
 @app.route('/login', methods=['POST'])
 def handle_login() -> str:
@@ -36,6 +22,9 @@ def handle_login() -> str:
 
     # Call the login function from testSignIn.py
     login(username, password)
+
+    input_past_context = "context"
+    responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
 
     # Store preferred_name in session
     session['preferred_name'] = preferred_name
@@ -89,8 +78,12 @@ def upload_audio() -> str:
 def start_recording() -> str:
     try:
         audio_capture.full_audio_capture()
-        voice_expression.find_voice_expression()
-        return jsonify({"success": True, "message": "Audio recording captured successfully"})
+        input_emotions = voice_expression.find_voice_expression()
+        input_text = "It didn't happen"
+        response_text = responseGenerator.generateMP3ForInput(input_text, input_emotions)
+
+        # Return the file path of the generated MP3 file
+        return jsonify({"responseText": response_text, "audioFile": "/static/output.mp3"})
     except Exception as e:
         print(f"An error occurred while capturing audio: {e}")
         return jsonify({"success": False, "message": "Failed to capture audio"})
