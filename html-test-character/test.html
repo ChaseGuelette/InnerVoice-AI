@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div class="video-container">
+        <video id="randomVideo" controls></video>
+    </div>
+    <div class="text-box-container">
+        <textarea placeholder="Enter your text here..."></textarea>
+    </div>
+
+    <script>
+        function loadVideo() {
+            const videoElement = document.getElementById('randomVideo');
+            videoElement.src = "HV9XQL24J6DCMLPU.mp4";
+            videoElement.play();
+        }
+
+        window.onload = loadVideo;
+    </script>
+</body>
+</html>
