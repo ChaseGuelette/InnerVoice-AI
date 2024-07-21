@@ -4,10 +4,14 @@ from utilities import print_emotions
 
 from hume import HumeBatchClient
 from hume.models.config import BurstConfig, ProsodyConfig
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def find_voice_expression():
 
-    client = HumeBatchClient(open(os.path.join(os.path.dirname(__file__), 'hume-key.txt'), 'r').read().strip())
+    client = HumeBatchClient(os.getenv("HUME_API_KEY"))
 
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
