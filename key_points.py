@@ -6,7 +6,9 @@ def key_points_extraction(api_key, conversation):
 
     conversationAsStr = ""    
     for entry in conversation:
-        if entry["role"] == "system":
+        if isinstance(entry, dict) and entry["role"] == "system":
+            continue
+        if entry.role == "system":
             continue
         content = entry["content"]
         # check if "User Speech: " is in the string
