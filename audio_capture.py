@@ -71,7 +71,7 @@ def record():
             num_silent = 0
 
         # Stop recording when 30 consecutive silent chunks are detected
-        if snd_started and num_silent > 125:
+        if snd_started and num_silent > 75:
             break
 
     

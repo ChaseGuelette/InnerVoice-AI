@@ -86,6 +86,10 @@
                     console.error('Error starting server-side recording:', error);
                     showToast('Failed to start server-side recording.');
                 });
+
+                window.onload = function() {
+                    fetchChatHistory();
+    };
         }
     </script>
 </body>

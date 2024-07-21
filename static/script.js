@@ -29,6 +29,10 @@ async function submitForm() {
 
     // Refresh the chat history
     fetchChatHistory();
+
+    // Also, you might want to clear the input fields after submitting the form
+    document.getElementById('inputText').value = '';
+    document.getElementById('inputEmotions').value = '';
 }
 
 function showToast(message) {

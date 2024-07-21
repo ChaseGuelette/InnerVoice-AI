@@ -3,6 +3,7 @@ import responseGenerator
 import audio_capture
 import voice_expression
 from testSignIn import login
+import openai
 import os
 
 app = Flask(__name__)
@@ -41,10 +42,23 @@ def handle_logout() -> str:
     session.clear()
     return jsonify({"success": True, "message": "Logout successful!"})
 
+
+def chat_message_to_dict(message):
+    if isinstance(message, dict):
+        return message
+    else:
+        return {
+            "role": message.role,
+            "content": message.content
+        }
+
 @app.route('/chat-history', methods=['GET'])
 def get_chat_history() -> str:
-    # Return the current conversation history
-    return jsonify({"conversation": responseGenerator.conversation})
+    # Convert each ChatCompletionMessage object to a dictionary
+    chat_history = [chat_message_to_dict(message) for message in responseGenerator.conversation]
+
+    # Return the chat history as a JSON response
+    return jsonify({"conversation": chat_history})
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio() -> str:
