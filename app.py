@@ -37,7 +37,7 @@ def handle_login() -> str:
     preferred_name = data.get('preferredName')
 
     # Call the login function from testSignIn.py
-    input_past_context = login(username, password, preferred_name)[0] or ""
+    input_past_context = login(username, password, preferred_name)[-1] or ""
 
     #input_past_context = "context"
     responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
@@ -54,6 +54,7 @@ def handle_login() -> str:
 @app.route('/logout', methods=['POST'])
 def handle_logout() -> str:
     # Clear session data
+    add_summary_to_db()
     session.clear()
     return jsonify({"success": True, "message": "Logout successful!"})
 
@@ -139,7 +140,7 @@ def start_recording() -> str:
         print(f"An error occurred while capturing audio: {e}")
         return jsonify({"success": False, "message": "Failed to capture audio"})
 
-def app_closing():
+def add_summary_to_db():
 
     print("App is closing")
     global data
@@ -162,7 +163,7 @@ def app_closing():
     # Write the updated list back to the database
     database.child("Users").child(username).child("Summaries").set(existing_summaries)
 
-atexit.register(app_closing)
+atexit.register(add_summary_to_db)
 
 if __name__ == '__main__':
     run_simple('localhost', 5000, app, use_reloader=False, use_debugger=True, use_evalex=True)
