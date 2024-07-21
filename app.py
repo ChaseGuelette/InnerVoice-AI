@@ -37,7 +37,9 @@ def handle_login() -> str:
     preferred_name = data.get('preferredName')
 
     # Call the login function from testSignIn.py
-    input_past_context = login(username, password, preferred_name)[-1] or ""
+    input_past_context = ""
+    for context in login(username, password, preferred_name):
+        input_past_context += context
 
     responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
 

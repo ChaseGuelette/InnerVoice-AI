@@ -1,18 +1,47 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background-image: url("/static/img-1.jpg"); /* Set the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-size: cover;
+}
+
+.title{
+    color: #eee;
+    font-size: 2.5em;
 }
 
 .header {
-    text-align: right;
-    margin-bottom: 20px;
+    position: absolute; /* Set position to absolute */
+    top: 0; /* Stick to the top */
+    right: 0; /* Stick to the right */
+    display: flex; /* Use flex layout */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Center items vertically */
+    padding: 20px; /* Add padding for spacing */
+    color: #eee;;
 }
+
+h1 {
+    position: absolute; /* Set position to absolute */
+    top: 0; /* Stick to the top */
+    left: 0; /* Stick to the right */
+    display: flex; /* Use flex layout */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Center items vertically */
+    padding-left: 10px;
+}
+
 
 .header button {
     font-size: 16px;
     padding: 10px 20px;
-    margin-left: 10px;
     cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+
 }
 
 .main-content {
@@ -20,19 +49,19 @@ body {
     justify-content: space-between;
 }
 
-.left-content {
-    flex: 1;
-}
-
-.right-content {
-    width: 80%;
+.chat-history-box {
+    width: 70%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-height: 80vh;
+    max-height: 60vh;
     overflow-y: scroll;
+    margin: auto;
+    margin-top: 15vh;
+    background-color: #eee; /* Add a white background color */
 }
+
 
 .auth-form {
     display: none; /* Hide the form initially */
@@ -97,14 +126,16 @@ body {
 }
 
 .chat-history {
-    width:95%;
+    width:98%;
     margin: auto;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-height: 80vh;
+    height: 40vh;
     overflow-y: scroll;
+    background-color: white; /* Add a white background color */
+
   }
   
   .chat-history-header {
@@ -134,3 +165,20 @@ body {
     background-color: #f0f9ff;
     align-self: flex-start;
   }
+
+  .record
+  {
+    margin-top: 2%;
+    padding: 2%;
+    width: 100%;
+    justify-self: center;
+  }
+
+  button {
+    border-radius: 10px; /* Add rounded corners */
+    background-color: #fff;
+    border: 1px solid #ccc; /* Add the same border as chat-history div */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Add the same box-shadow as chat-history div */
+    color: #000;;
+
+}

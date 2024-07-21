@@ -7,13 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+    <h1 class="title">Inner Voice AI</h1>
     <div class="header">
-        <button id="signInBtn" onclick="showAuthForm('Sign In')">Sign In</button>
-        <button id="signUpBtn" onclick="showAuthForm('Sign Up')">Sign Up</button>
-        <span id="greetingMsg" hidden>
-            Hello, <span id="preferredNameDisplay"></span>
-            <button id="signOutBtn" onclick="signOut()">Sign Out</button>
-        </span>
+        <div>
+            <button id="signInBtn" onclick="showAuthForm('Sign In')">Sign In</button>
+            <button id="signUpBtn" onclick="showAuthForm('Sign Up')">Sign Up</button>
+            <span id="greetingMsg" hidden>
+                Hello, <span id="preferredNameDisplay"></span>
+                <button id="signOutBtn" onclick="signOut()">Sign Out</button>
+            </span>
+        </div>
     </div>
 
     <!-- Sign In / Sign Up Form -->
@@ -29,18 +32,14 @@
     </div>
 
     <div class="main-content">
-        <div class="left-content">
-            <h1>Inner Voice AI</h1>
-
-            <button type="button" onclick="submitForm()">Start Recording</button>
-
+        
             <p id="responseText"></p>
             <audio id="audio" controls hidden preload="auto">
                 <source id="audioSource" src="{{ url_for('static', filename='output.mp3') }}" type="audio/mpeg">
             </audio>
         </div>
 
-        <div class="right-content">
+        <div class="chat-history-box">
             <div id="chatHistory" class="chat-history">
               <div class="chat-history-header">
                 <h2>Chat History</h2>
@@ -49,6 +48,7 @@
                 <!-- Chat messages will be inserted here -->
               </div>
             </div>
+            <button type="button" class="record" onclick="submitForm()">Start Recording</button>
         </div>
     </div>
 

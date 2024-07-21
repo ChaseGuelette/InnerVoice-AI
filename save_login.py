@@ -1,12 +1,15 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
-def login(username, password, preferred_name):
-    json_path = "testing-project-2f261-firebase-adminsdk-boek8-6945570a63.json"
-    cred = credentials.Certificate(json_path)
-    firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://testing-project-2f261-default-rtdb.firebaseio.com/'
+
+json_path = "testing-project-2f261-firebase-adminsdk-boek8-6945570a63.json"
+cred = credentials.Certificate(json_path)
+firebase_admin.initialize_app(cred, {
+'databaseURL': 'https://testing-project-2f261-default-rtdb.firebaseio.com/'
 })
+
+def login(username, password, preferred_name):
+    
     database = db.reference()
 
     # Get user data from the database

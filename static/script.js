@@ -7,9 +7,7 @@ async function submitForm() {
                     const audioElement = document.getElementById('audio');
                     const audioSource = document.getElementById('audioSource');
                     audioSource.src = data.audioFile + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
-    
-                    audioElement.hidden = false;
-    
+        
                     audioElement.load(); // Reload the audio element to ensure it's ready to play
     
                     // Ensure the audio file is completely loaded before playing it
