@@ -12,8 +12,6 @@ openai.api_key = OPENAI_API_KEY
 
 ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
 
-ELEVEN_LABS_API_KEY = open("elevenlabskey.txt", "r").read()
-
 CHUNK_SIZE = 1024
 url = "https://api.elevenlabs.io/v1/text-to-speech/iP95p4xoKVk53GoZ742B"
 
