@@ -1,3 +1,5 @@
+import key_points
+import signal
 from flask import Flask, request, render_template, jsonify, session
 import responseGenerator
 import audio_capture
@@ -5,9 +7,21 @@ import voice_expression
 from save_login import login
 import openai
 import os
+from werkzeug.serving import run_simple
+import atexit
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = OPENAI_API_KEY
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a secure secret key
+data = {}
 
 @app.route('/')
 def index() -> str:
@@ -16,15 +30,16 @@ def index() -> str:
 
 @app.route('/login', methods=['POST'])
 def handle_login() -> str:
+    global data
     data = request.json
     username = data.get('username')
     password = data.get('password')
     preferred_name = data.get('preferredName')
 
     # Call the login function from testSignIn.py
-    login(username, password, preferred_name)
+    input_past_context = login(username, password, preferred_name)[0] or ""
 
-    input_past_context = "context"
+    #input_past_context = "context"
     responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
 
     # Store preferred_name in session
@@ -103,5 +118,31 @@ def start_recording() -> str:
         print(f"An error occurred while capturing audio: {e}")
         return jsonify({"success": False, "message": "Failed to capture audio"})
 
+def app_closing():
+
+    print("App is closing")
+    global data
+    username = data.get('username')
+    password = data.get('password')
+    preferred_name = data.get('preferredName')
+    json_path = "testing-project-2f261-firebase-adminsdk-boek8-6945570a63.json"
+
+    database = db.reference()
+
+    print(responseGenerator.conversation)
+    #conversation = [{"role":"user", "content": "Emotions : Joy Amusement Disappointment Shame Distress Fear Pain Sadness \nUser Speach: my dog died and i fell down the stairs"}, {"role":"assistant", "content": "it is really interesting that you say that you should probably lock in and work harder"}]
+    summary = key_points.key_points_extraction(openai.api_key, responseGenerator.conversation)
+
+
+    # Retrieve the existing list of summaries
+    existing_summaries = database.child("Users").child(username).child("Summaries").get() or []
+    # Append the new summary to the list
+    existing_summaries.append(summary)
+    # Write the updated list back to the database
+    database.child("Users").child(username).child("Summaries").set(existing_summaries)
+
+atexit.register(app_closing)
+
 if __name__ == '__main__':
-    app.run(debug=True)  # Use debug=True for development purposes
+    run_simple('localhost', 5000, app, use_reloader=False, use_debugger=True, use_evalex=True)
+    
