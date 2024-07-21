@@ -54,6 +54,7 @@ def chat_message_to_dict(message):
 
 @app.route('/chat-history', methods=['GET'])
 def get_chat_history() -> str:
+    print("Getting chat history...")
     # Convert each ChatCompletionMessage object to a dictionary
     chat_history = [chat_message_to_dict(message) for message in responseGenerator.conversation]
 

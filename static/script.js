@@ -1,38 +1,30 @@
 async function submitForm() {
-    const inputPastContext = document.getElementById('inputPastContext').value;
-    const inputText = document.getElementById('inputText').value;
-    const inputEmotions = document.getElementById('inputEmotions').value;
-
-    const response = await fetch('/start-recording', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `inputPastContext=${encodeURIComponent(inputPastContext)}&inputText=${encodeURIComponent(inputText)}&inputEmotions=${encodeURIComponent(inputEmotions)}`
-    });
-
-    const data = await response.json();
-    document.getElementById('responseText').innerText = data.responseText;
+    fetch('/start-recording')
+                .then(response => response.json())
+                .then(data => {
+                    fetchChatHistory()
+                    showToast(data.message);
+                    const audioElement = document.getElementById('audio');
+                    const audioSource = document.getElementById('audioSource');
+                    audioSource.src = data.audioFile + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
     
-    const audioElement = document.getElementById('audio');
-    const audioSource = document.getElementById('audioSource');
-    audioSource.src = 'static/output.mp3' + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
-
-    audioElement.hidden = false;
+                    audioElement.hidden = false;
     
-    audioElement.load(); // Reload the audio element to ensure it's ready to play
+                    audioElement.load(); // Reload the audio element to ensure it's ready to play
+    
+                    // Ensure the audio file is completely loaded before playing it
+                    audioElement.oncanplaythrough = () => {
+                        audioElement.play();
+                    };
+                })
+                .catch(error => {
+                    console.error('Error starting server-side recording:', error);
+                    showToast('Failed to start server-side recording.');
+                });
 
-    // Ensure the audio file is completely loaded before playing it
-    audioElement.oncanplaythrough = () => {
-        audioElement.play();
+                window.onload = function() {
+                    fetchChatHistory();
     };
-
-    // Refresh the chat history
-    fetchChatHistory();
-
-    // Also, you might want to clear the input fields after submitting the form
-    document.getElementById('inputText').value = '';
-    document.getElementById('inputEmotions').value = '';
 }
 
 function showToast(message) {
@@ -148,6 +140,7 @@ async function signOut() {
 }
 
 async function fetchChatHistory() {
+    console.log("Fetching chat history...");
     const response = await fetch('/chat-history', {
         method: 'GET',
         headers: {
@@ -156,17 +149,21 @@ async function fetchChatHistory() {
     });
 
     const data = await response.json();
+    console.log("Received chat history:", data);
     displayChatHistory(data.conversation);
 }
 
+console.log("Script loaded");
+
 function displayChatHistory(conversation) {
-    const chatHistoryDiv = document.getElementById('chatHistory');
-    chatHistoryDiv.innerHTML = '';
+    console.log("Displaying chat history:", conversation);
+    const chatHistoryMessages = document.querySelector('.chat-history-messages');
+    chatHistoryMessages.innerHTML = '';
 
     conversation.forEach(chat => {
         const chatMessage = document.createElement('div');
-        chatMessage.className = 'chat-message';
-        chatMessage.innerText = `${chat.role === 'user' ? 'User' : 'System'}: ${chat.content}`;
-        chatHistoryDiv.appendChild(chatMessage);
+        chatMessage.className = `chat-message ${chat.role}`;
+        chatMessage.innerText = chat.content;
+        chatHistoryMessages.appendChild(chatMessage);
     });
 }

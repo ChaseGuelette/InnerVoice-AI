@@ -43,10 +43,3 @@ def find_voice_expression():
             for prosody_prediction in prosody_predictions:
                 for segment in prosody_prediction["predictions"][:1]:
                     return print_emotions(segment["emotions"])
-
-            # print()
-            # print("Vocal burst")
-            # burst_predictions = prediction["models"]["burst"]["grouped_predictions"]
-            # for burst_prediction in burst_predictions:
-            #     for segment in burst_prediction["predictions"][:1]:
-            #         print_emotions(segment["emotions"])

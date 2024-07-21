@@ -25,7 +25,7 @@ body {
 }
 
 .right-content {
-    width: 30%;
+    width: 80%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -95,3 +95,42 @@ body {
     from {bottom: 30px; opacity: 1;}
     to {bottom: 0; opacity: 0;}
 }
+
+.chat-history {
+    width:95%;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
+  
+  .chat-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .chat-history-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .chat-message {
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .chat-message.user {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+  }
+  
+  .chat-message.system {
+    background-color: #f0f9ff;
+    align-self: flex-start;
+  }
