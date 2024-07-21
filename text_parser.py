@@ -1,7 +1,7 @@
 import whisper
 from pydub import AudioSegment
 import numpy as np
-import torch
+from torch import from_numpy 
 import warnings
 import openai 
 
