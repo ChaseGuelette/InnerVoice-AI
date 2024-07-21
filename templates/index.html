@@ -28,28 +28,69 @@
         </form>
     </div>
     
-    <h1>Text to Speech Generator</h1>
+    <div class="main-content">
+        <div class="left-content">
+            <h1>Text to Speech Generator</h1>
+            
+            <!-- Add new past context field -->
+            <form id="textForm">
+                <label for="inputPastContext">Past Context:</label><br>
+                <textarea id="inputPastContext" name="inputPastContext" rows="4" cols="50" placeholder="Enter all past context here"></textarea><br><br>
 
-    <!-- Add new past context field -->
-    <form id="textForm">
-        <label for="inputPastContext">Past Context:</label><br>
-        <textarea id="inputPastContext" name="inputPastContext" rows="4" cols="50" placeholder="Enter all past context here"></textarea><br><br>
+                <label for="inputText">Input Text:</label><br>
+                <textarea id="inputText" name="inputText" rows="4" cols="50"></textarea><br><br>
+                
+                <label for="inputEmotions">Input Emotions:</label><br>
+                <textarea id="inputEmotions" name="inputEmotions" rows="2" cols="50"></textarea><br><br>
+                
+                <!-- New Button for Server-side Recording -->
+                <button type="button" onclick="startServerSideRecording()">Start Server-side Recording</button>
 
-        <label for="inputText">Input Text:</label><br>
-        <textarea id="inputText" name="inputText" rows="4" cols="50"></textarea><br><br>
-        
-        <label for="inputEmotions">Input Emotions:</label><br>
-        <textarea id="inputEmotions" name="inputEmotions" rows="2" cols="50"></textarea><br><br>
-        
-        <button type="button" onclick="submitForm()">Generate</button>
-    </form>
+                <button type="button" onclick="submitForm()">Generate</button>
+            </form>
 
-    <p id="responseText"></p>
-    <audio id="audio" controls hidden preload="auto">
-        <source id="audioSource" src="{{ url_for('static', filename='output.mp3') }}" type="audio/mpeg">
-    </audio>
+            <p id="responseText"></p>
+            <audio id="audio" controls hidden preload="auto">
+                <source id="audioSource" src="{{ url_for('static', filename='output.mp3') }}" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <div class="right-content">
+            <h2>Chat History</h2>
+            <div id="chatHistory"></div>
+        </div>
+    </div>
 
     <div id="toast" class="toast"></div> <!-- Toast container -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function startServerSideRecording() {
+            fetch('/start-recording')
+                .then(response => response.json())
+                .then(data => {
+                    showToast(data.message);
+                    const audioElement = document.getElementById('audio');
+                    const audioSource = document.getElementById('audioSource');
+                    audioSource.src = data.audioFile + '?' + new Date().getTime(); // Force reload the audio by adding a timestamp
+    
+                    audioElement.hidden = false;
+    
+                    audioElement.load(); // Reload the audio element to ensure it's ready to play
+    
+                    // Ensure the audio file is completely loaded before playing it
+                    audioElement.oncanplaythrough = () => {
+                        audioElement.play();
+                    };
+                })
+                .catch(error => {
+                    console.error('Error starting server-side recording:', error);
+                    showToast('Failed to start server-side recording.');
+                });
+
+                window.onload = function() {
+                    fetchChatHistory();
+    };
+        }
+    </script>
 </body>
 </html>

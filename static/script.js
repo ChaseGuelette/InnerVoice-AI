@@ -3,7 +3,7 @@ async function submitForm() {
     const inputText = document.getElementById('inputText').value;
     const inputEmotions = document.getElementById('inputEmotions').value;
 
-    const response = await fetch('/generate', {
+    const response = await fetch('/start-recording', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,6 +26,13 @@ async function submitForm() {
     audioElement.oncanplaythrough = () => {
         audioElement.play();
     };
+
+    // Refresh the chat history
+    fetchChatHistory();
+
+    // Also, you might want to clear the input fields after submitting the form
+    document.getElementById('inputText').value = '';
+    document.getElementById('inputEmotions').value = '';
 }
 
 function showToast(message) {
@@ -138,4 +145,28 @@ async function signOut() {
         document.getElementById('preferredName').value = '';
         document.getElementById('password').value = '';
     }
+}
+
+async function fetchChatHistory() {
+    const response = await fetch('/chat-history', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    const data = await response.json();
+    displayChatHistory(data.conversation);
+}
+
+function displayChatHistory(conversation) {
+    const chatHistoryDiv = document.getElementById('chatHistory');
+    chatHistoryDiv.innerHTML = '';
+
+    conversation.forEach(chat => {
+        const chatMessage = document.createElement('div');
+        chatMessage.className = 'chat-message';
+        chatMessage.innerText = `${chat.role === 'user' ? 'User' : 'System'}: ${chat.content}`;
+        chatHistoryDiv.appendChild(chatMessage);
+    });
 }

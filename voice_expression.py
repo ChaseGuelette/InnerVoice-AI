@@ -13,7 +13,7 @@ def find_voice_expression():
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Construct the file path to the MP3 file
-    mp3_file_path = os.path.join(script_dir, "audio-files", "output.mp3")
+    mp3_file_path = os.path.join(script_dir, "audio-files", "speach.mp3")
 
 
     urls = ["https://storage.googleapis.com/hume-test-data/audio/ninth-century-laugh.mp3"]
@@ -30,10 +30,10 @@ def find_voice_expression():
     print("Job completed with status: ", job.get_status())
 
     full_predictions = job.get_predictions()
-    #print(full_predictions)
+    print(full_predictions)
     for source in full_predictions:
-        #print(str(source))
-        source_name = source["source"]["filename"]
+        # print(str(source))
+        # source_name = source["source"]["filename"]
         predictions = source["results"]["predictions"]
 
         for prediction in predictions:
@@ -42,11 +42,11 @@ def find_voice_expression():
             prosody_predictions = prediction["models"]["prosody"]["grouped_predictions"]
             for prosody_prediction in prosody_predictions:
                 for segment in prosody_prediction["predictions"][:1]:
-                    print_emotions(segment["emotions"])
+                    return print_emotions(segment["emotions"])
 
-            print()
-            print("Vocal burst")
-            burst_predictions = prediction["models"]["burst"]["grouped_predictions"]
-            for burst_prediction in burst_predictions:
-                for segment in burst_prediction["predictions"][:1]:
-                    print_emotions(segment["emotions"])
+            # print()
+            # print("Vocal burst")
+            # burst_predictions = prediction["models"]["burst"]["grouped_predictions"]
+            # for burst_prediction in burst_predictions:
+            #     for segment in burst_prediction["predictions"][:1]:
+            #         print_emotions(segment["emotions"])
