@@ -93,9 +93,8 @@ def upload_audio() -> str:
 def start_recording() -> str:
     try:
         audio_capture.full_audio_capture()
-        input_emotions = voice_expression.find_voice_expression()
-        input_text = "It didn't happen"
-        response_text = responseGenerator.generateMP3ForInput(input_text, input_emotions)
+        output = voice_expression.find_voice_expression()
+        response_text = responseGenerator.generateMP3ForInput(output[0], output[1])
 
         # Return the file path of the generated MP3 file
         return jsonify({"responseText": response_text, "audioFile": "/static/output.mp3"})
