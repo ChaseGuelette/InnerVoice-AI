@@ -24,7 +24,7 @@ def handle_login() -> str:
     # Call the login function from testSignIn.py
     login(username, password)
 
-    input_past_context = "context"
+    input_past_context = ""
     responseGenerator.initOpenAITextGeneration(preferred_name, input_past_context)
 
     # Store preferred_name in session
@@ -45,12 +45,33 @@ def handle_logout() -> str:
 
 def chat_message_to_dict(message):
     if isinstance(message, dict):
-        return message
+        content = message["content"]
+        if "User Speach:" in content:
+            split_content = content.split("User Speach: ")
+            user_speech = split_content[-1]
+            content = user_speech.strip()
+        else:
+            content = content.strip()
+        
+        return {
+            "role": message["role"],
+            "content": content
+        }
     else:
+        content = message.content
+        if "User Speach:" in content:
+            split_content = content.split("User Speach: ")
+            user_speech = split_content[-1]
+            content = user_speech.strip()
+        else:
+            content = content.strip()
+        
         return {
             "role": message.role,
-            "content": message.content
+            "content": content
         }
+    
+        
 
 @app.route('/chat-history', methods=['GET'])
 def get_chat_history() -> str:

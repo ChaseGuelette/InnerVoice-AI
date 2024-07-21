@@ -161,9 +161,11 @@ function displayChatHistory(conversation) {
     chatHistoryMessages.innerHTML = '';
 
     conversation.forEach(chat => {
-        const chatMessage = document.createElement('div');
-        chatMessage.className = `chat-message ${chat.role}`;
-        chatMessage.innerText = chat.content;
-        chatHistoryMessages.appendChild(chatMessage);
+        if (chat.role != 'system'){
+            const chatMessage = document.createElement('div');
+            chatMessage.className = `chat-message ${chat.role}`;
+            chatMessage.innerText = chat.content;
+            chatHistoryMessages.appendChild(chatMessage);
+        }
     });
 }
