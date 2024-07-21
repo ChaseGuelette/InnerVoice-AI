@@ -1,4 +1,6 @@
 import openai 
+from dotenv import load_dotenv
+import os
 
 def key_points_extraction(api_key, conversation):
 
@@ -33,9 +35,13 @@ def key_points_extraction(api_key, conversation):
     return response.choices[0].message.content
 
 if __name__ == "__main__":
-    api_key = open("openaikey.txt", "r").read()
+
+    load_dotenv()  # Load environment variables from .env file
+
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    openai.api_key = OPENAI_API_KEY
 
     conversation = [{"content": "Emotions : Joy Amusement Disappointment Shame Distress Fear Pain Sadness \nUser Speach: my dog died and i fell down the stairs"}, {"content": "it is really interesting that you say that you should probably lock in and work harder"}]
-    key_points = key_points_extraction(api_key, conversation)
+    key_points = key_points_extraction(openai.api_key, conversation)
 
     print(key_points)
